@@ -5,15 +5,14 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cos.photogramstart.domain.user.User;
+import com.cos.photogramstart.handler.ex.CustomValidationException;
 import com.cos.photogramstart.service.AuthService;
 import com.cos.photogramstart.web.dto.auth.SignupDto;
 
@@ -38,7 +37,7 @@ public class AuthController {
 	}
 
 	@PostMapping("/auth/signup")
-	public @ResponseBody String signup(@Valid SignupDto signupDto, BindingResult bindingResult){
+	public String signup(@Valid SignupDto signupDto, BindingResult bindingResult){
 
 		if(bindingResult.hasErrors()) {
 			Map<String, String> errMap = new HashMap<>();
@@ -50,7 +49,7 @@ public class AuthController {
 				System.out.println(error.getDefaultMessage());
 				System.out.println("============================================");
 			}
-			return "오류남";
+			throw new CustomValidationException("유효성 검사 실패", errMap);
 		} else {
 			//log.info(signupDto.toString());
 			User user = signupDto.toEntity();
