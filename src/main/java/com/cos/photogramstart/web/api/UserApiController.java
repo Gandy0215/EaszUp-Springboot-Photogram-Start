@@ -33,7 +33,8 @@ public class UserApiController {
 		BindingResult bindingResult,    // 반드시 @Vaild 뒤에 적어야 함
 		@AuthenticationPrincipal PrincipalDetails principalDetails) {
 
-		if (bindingResult.hasErrors()) {
+		//if (bindingResult.hasErrors()) {
+		if (false) {
 			Map<String, String> errMap = new HashMap<>();
 
 			for (FieldError error : bindingResult.getFieldErrors()) {
