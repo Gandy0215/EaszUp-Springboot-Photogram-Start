@@ -29,4 +29,6 @@ public class SubscribeService {
 	public int 구독취소하기(int fromUserId, int toUserId) {
 		return subscribeRepository.mUnSubscribe(fromUserId, toUserId);
 	}
+
+
 }
