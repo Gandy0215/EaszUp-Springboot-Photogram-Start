@@ -40,12 +40,48 @@ function toggleSubscribe(toUserId, obj) {
 }
 
 // (2) 구독자 정보  모달 보기
-function subscribeInfoModalOpen() {
+function subscribeInfoModalOpen(pageUserId) {
 	$(".modal-subscribe").css("display", "flex");
+
+	$.ajax({
+		type:"get",
+		url:'/api/user/' + pageUserId + '/subscribe',
+		dataType:"json"
+	}).done(res => {
+		console.log(res.data);
+		res.data.forEach((u) => {
+			let item = getSubscribeModalItem(u);
+			$("#subscribeModalList").append(item);
+		})
+	}).fail(error => {
+			console.log("구독자 조회 실패", error);
+		}
+	);
+
 }
 
-function getSubscribeModalItem() {
+function getSubscribeModalItem(u) {
+	let item = 	'<div class="subscribe__item" id="subscribeModalItem-${u.id}">\n' +
+				'    <div class="subscribe__img">\n' +
+				'        <img src="/upload/' + u.profileImageUrl + '" onerror="this.src=\'/images/person.jpeg\'"/>\n' +
+				'    </div>\n' +
+				'    <div class="subscribe__text">\n' +
+				'        <h2>' + u.username + '</h2>\n' +
+				'    </div>\n' +
+				'    <div class="subscribe__btn">\n';
 
+	if(!u.equalUserState){
+		if(u.subscribeState) {
+			item +=	'        <button class="cta blue" onclick="toggleSubscribeModal(this)">구독취소</button>\n';
+		}
+		else {
+			item += '        <b-utton class="cta " onclick="toggleSubscribeModal(this)">구독하기</b-utton>\n';
+		}
+	}
+
+	item +=			'    </div>\n' +
+				'</div>';
+	return item;
 }
 
 
