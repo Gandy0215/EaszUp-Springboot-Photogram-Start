@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +23,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Service
 public class ImageService {
+
+	@Transactional(readOnly = true)
+	public List<Image> 이미지스토리(int principalId) {
+		return imageRepository.mStory(principalId);
+	}
+
 
 	@Value("${file.path}")
 	private String FILE_UPLOAD_PATH;
