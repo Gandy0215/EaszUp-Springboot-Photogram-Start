@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,8 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ImageService {
 
 	@Transactional(readOnly = true)
-	public List<Image> 이미지스토리(int principalId) {
-		return imageRepository.mStory(principalId);
+	public Page<Image> 이미지스토리(int principalId, Pageable pageable) {
+		return imageRepository.mStory(principalId, pageable);
 	}
 
 
