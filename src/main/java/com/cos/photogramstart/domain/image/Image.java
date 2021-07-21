@@ -54,6 +54,9 @@ public class Image {
 	@Transient // DB에 컬럼을 만들지 않음
 	private boolean likeState;
 
+	@Transient // DB에 컬럼을 만들지 않음
+	private int likeCount;
+
 	@PrePersist
 	public void createDate() {
 		this.createDate = LocalDateTime.now();
