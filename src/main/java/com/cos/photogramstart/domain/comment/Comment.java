@@ -1,8 +1,8 @@
-package com.cos.photogramstart.domain.image;
+package com.cos.photogramstart.domain.comment;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -10,12 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
-import javax.persistence.Transient;
 
-import com.cos.photogramstart.domain.comment.Comment;
-import com.cos.photogramstart.domain.likes.Likes;
+import com.cos.photogramstart.domain.image.Image;
 import com.cos.photogramstart.domain.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -29,41 +26,28 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-public class Image {
+public class Comment {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private String caption;			// 사진에 대한 설명
-	private String postImageUrl;	// 파일이 저장 된 경로
+
+	@Column(length = 100, nullable = false)
+	private String content;
 
 	@JsonIgnoreProperties({"images"})
-	@JoinColumn(name = "userId")
+	@JoinColumn(name="userId")
 	@ManyToOne(fetch = FetchType.EAGER)
 	private User user;
 
-	// 이미지 좋아요
-	@JsonIgnoreProperties({"image"})
-	@OneToMany(mappedBy = "image")
-	private List<Likes> likes;
-
-	// 댓글
-	@JsonIgnoreProperties({"image"})
-	@OneToMany(mappedBy="image")
-	private List<Comment> comments;
-
+	@JoinColumn(name="imageId")
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Image image;
 
 	private LocalDateTime createDate;
-
-	@Transient // DB에 컬럼을 만들지 않음
-	private boolean likeState;
-
-	@Transient // DB에 컬럼을 만들지 않음
-	private int likeCount;
 
 	@PrePersist
 	public void createDate() {
 		this.createDate = LocalDateTime.now();
 	}
-
 }
