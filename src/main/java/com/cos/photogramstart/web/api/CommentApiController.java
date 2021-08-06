@@ -33,22 +33,9 @@ public class CommentApiController {
 
 	@PostMapping("/api/comment")
 	public ResponseEntity<?> commentSave(@Valid @RequestBody CommentDto commentDto, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails principalDetails){
-		if (bindingResult.hasErrors()) {
-			Map<String, String> errMap = new HashMap<>();
-
-			for (FieldError error : bindingResult.getFieldErrors()) {
-				errMap.put(error.getField(), error.getDefaultMessage());
-
-				System.out.println("============================================");
-				System.out.println(error.getDefaultMessage());
-				System.out.println("============================================");
-			}
-			throw new CustomValidationApiException("유효성 검사 실패", errMap);
-		} else {
-			Comment comment = commentService.댓글쓰기(commentDto.getContent(), commentDto.getImageId(),
-				principalDetails.getUser().getId());
-			return new ResponseEntity<>(new CMRespDto<>(1, "성공", comment), HttpStatus.OK);
-		}
+		Comment comment = commentService.댓글쓰기(commentDto.getContent(), commentDto.getImageId(),
+			principalDetails.getUser().getId());
+		return new ResponseEntity<>(new CMRespDto<>(1, "성공", comment), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/api/comment/{id}")

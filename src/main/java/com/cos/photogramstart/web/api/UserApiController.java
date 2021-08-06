@@ -57,21 +57,8 @@ public class UserApiController {
 		BindingResult bindingResult,    // 반드시 @Vaild 뒤에 적어야 함
 		@AuthenticationPrincipal PrincipalDetails principalDetails) {
 
-		if (bindingResult.hasErrors()) {
-			Map<String, String> errMap = new HashMap<>();
-
-			for (FieldError error : bindingResult.getFieldErrors()) {
-				errMap.put(error.getField(), error.getDefaultMessage());
-
-				System.out.println("============================================");
-				System.out.println(error.getDefaultMessage());
-				System.out.println("============================================");
-			}
-			throw new CustomValidationApiException("유효성 검사 실패", errMap);
-		} else {
 			User userEntity = userService.회원수정(id, userUpdateDto.toEntity());
 			principalDetails.setUser(userEntity);
 			return new CMRespDto<>(1, "회원수정완료", userEntity);
-		}
 	}
 }
