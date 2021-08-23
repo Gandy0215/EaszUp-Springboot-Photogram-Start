@@ -19,13 +19,14 @@ spring:
     password: photogram
     
   jpa:
+    generate-ddl: true
     open-in-view: true
     hibernate:
       ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
-      
+
   servlet:
     multipart:
       enabled: true
@@ -34,7 +35,16 @@ spring:
   security:
     user:
       name: test
-      password: 1234   
+      password: 1234
+    oauth2:
+      client:
+        registration:
+          facebook:
+            client-id: 2073160319503356
+            client-secret: ffbded384ded3c0798a12c2f16ce853d
+            scope:
+              - public_profile
+              - email
 
 file:
   path: E:/project/photogram_upload/
